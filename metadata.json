@@ -1,0 +1,6 @@
+{
+  "name": "Engenheiros da Banda",
+  "description": "Aplicativo para gerenciar pedidos sob demanda de técnicos e engenheiros eletricistas, informáticos e técnicos de TI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
