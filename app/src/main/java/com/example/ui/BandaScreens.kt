@@ -145,24 +145,22 @@ fun RoleSelectionScreen(viewModel: BandaViewModel) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(22.dp))
-                    .background(Brush.sweepGradient(listOf(PremiumGold, TechCyan, PremiumRed, PremiumGold)))
+                    .size(110.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(Brush.sweepGradient(listOf(PremiumGold, TechCyan, PremiumGold)))
                     .padding(3.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(19.dp))
-                        .background(CardGrey),
-                    contentAlignment = Alignment.Center
+                        .clip(RoundedCornerShape(21.dp))
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Construction,
-                        contentDescription = "Logo",
-                        tint = PremiumGold,
-                        modifier = Modifier.size(48.dp)
+                    Image(
+                        painter = androidx.compose.ui.res.painterResource(id = com.example.R.drawable.logo_official),
+                        contentDescription = "Logo Oficial Engenheiros da Banda",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop
                     )
                 }
             }
@@ -565,582 +563,586 @@ fun ClientHomeScreen(viewModel: BandaViewModel) {
 
     var viewModeMap by remember { mutableStateOf(false) }
 
-    Column(
+    // 2. Interactive Tech Diagnostic panel (Entertaining & tech-oriented)
+    var networkLatency by remember { mutableStateOf(24) }
+    var systemStability by remember { mutableStateOf(99) }
+    var activeTechTip by remember { mutableStateOf("Redes Wi-Fi instáveis? Tente posicionar o roteador em local livre de obstáculos e alto.") }
+    
+    // Simulating minor network variations on recompositions
+    LaunchedEffect(Unit) {
+        while(true) {
+            kotlinx.coroutines.delay(4000)
+            networkLatency = (15..35).random()
+            systemStability = (97..100).random()
+        }
+    }
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // 1. Futuristic Tech Hero Banner Image Card
-        Card(
-            colors = CardDefaults.cardColors(containerColor = CardGrey),
-            border = BorderStroke(
-                1.5.dp, 
-                Brush.linearGradient(listOf(TechCyan, PremiumGold))
-            ),
-            shape = RoundedCornerShape(18.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
-                Image(
-                    painter = androidx.compose.ui.res.painterResource(id = com.example.R.drawable.img_tech_client),
-                    contentDescription = "Suporte Tecnológico Luanda",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
-                )
-                // Overlay gradient for high-contrast text visibility
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    SlateDark.copy(alpha = 0.95f)
-                                )
-                            )
-                        )
-                )
-                // Floating indicators/holographic styling
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(16.dp)
-                ) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = CardGrey),
+                border = BorderStroke(
+                    1.5.dp, 
+                    Brush.linearGradient(listOf(TechCyan, PremiumGold))
+                ),
+                shape = RoundedCornerShape(18.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+                    Image(
+                        painter = androidx.compose.ui.res.painterResource(id = com.example.R.drawable.img_tech_client),
+                        contentDescription = "Suporte Tecnológico Luanda",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                    )
+                    // Overlay gradient for high-contrast text visibility
                     Box(
                         modifier = Modifier
-                            .background(TechCyan.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
-                            .border(1.dp, TechCyan, RoundedCornerShape(4.dp))
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        SlateDark.copy(alpha = 0.95f)
+                                    )
+                                )
+                            )
+                    )
+                    // Floating indicators/holographic styling
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(16.dp)
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .background(TechCyan.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
+                                .border(1.dp, TechCyan, RoundedCornerShape(4.dp))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "CENTRAL DE INOVAÇÃO DE TI",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TechCyan,
+                                letterSpacing = 1.sp
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "CENTRAL DE INOVAÇÃO DE TI",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TechCyan,
-                            letterSpacing = 1.sp
+                            text = "Olá, ${clientName.ifBlank { "Cliente da Banda" }}! 👋",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Black,
+                            color = TextWhite
                         )
                     }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "Olá, ${clientName.ifBlank { "Cliente da Banda" }}! 👋",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Black,
-                        color = TextWhite
-                    )
                 }
             }
         }
 
         // 2. Interactive Tech Diagnostic panel (Entertaining & tech-oriented)
-        var networkLatency by remember { mutableStateOf(24) }
-        var systemStability by remember { mutableStateOf(99) }
-        var activeTechTip by remember { mutableStateOf("Redes Wi-Fi instáveis? Tente posicionar o roteador em local livre de obstáculos e alto.") }
-        
-        // Simulating minor network variations on recompositions
-        LaunchedEffect(Unit) {
-            while(true) {
-                kotlinx.coroutines.delay(4000)
-                networkLatency = (15..35).random()
-                systemStability = (97..100).random()
-            }
-        }
-
-        Card(
-            colors = CardDefaults.cardColors(containerColor = CardGrey),
-            border = BorderStroke(1.dp, BorderGrey),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Dns,
-                            contentDescription = "Diagnóstico",
-                            tint = TechCyan,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Terminal de Monitoramento de Rede",
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextWhite
-                        )
-                    }
-                    
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(SuccessGreen.copy(alpha = 0.15f))
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = "SISTEMA ONLINE",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = SuccessGreen
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Diagnostic metrics row
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .background(SlateDark.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
-                            .border(1.dp, BorderGrey, RoundedCornerShape(8.dp))
-                            .padding(10.dp)
-                    ) {
-                        Text("Latência Luanda", fontSize = 10.sp, color = TextGrey)
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                            modifier = Modifier.padding(top = 2.dp)
-                        ) {
-                            Text("${networkLatency}ms", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TechCyan)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Icon(
-                                imageVector = Icons.Default.Speed,
-                                contentDescription = null,
-                                tint = TechCyan,
-                                modifier = Modifier.size(12.dp).align(Alignment.CenterVertically)
-                            )
-                        }
-                    }
-
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .background(SlateDark.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
-                            .border(1.dp, BorderGrey, RoundedCornerShape(8.dp))
-                            .padding(10.dp)
-                    ) {
-                        Text("Estabilidade VPN", fontSize = 10.sp, color = TextGrey)
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                            modifier = Modifier.padding(top = 2.dp)
-                        ) {
-                            Text("${systemStability}%", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = SuccessGreen)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Icon(
-                                imageVector = Icons.Default.Shield,
-                                contentDescription = null,
-                                tint = SuccessGreen,
-                                modifier = Modifier.size(12.dp).align(Alignment.CenterVertically)
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Changing tech tips panel
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF141F32), RoundedCornerShape(8.dp))
-                        .padding(12.dp)
-                ) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = CardGrey),
+                border = BorderStroke(1.dp, BorderGrey),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "💡 DICA TECNOLÓGICA INTELIGENTE",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = PremiumGold
-                        )
-                        Icon(
-                            imageVector = Icons.Default.Cached,
-                            contentDescription = "Próxima Dica",
-                            tint = PremiumGold,
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Dns,
+                                contentDescription = "Diagnóstico",
+                                tint = TechCyan,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Terminal de Monitoramento de Rede",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextWhite
+                            )
+                        }
+                        
+                        Box(
                             modifier = Modifier
-                                .size(14.dp)
-                                .clickable {
-                                    val tips = listOf(
-                                        "Wi-Fi lento? Reiniciar o roteador limpa a cache de pacotes congestionados.",
-                                        "Software travando? Uma formatação limpa ou atualização de drivers resolve 90% dos problemas de lentidão.",
-                                        "Fiação elétrica quente de rede pode enfraquecer o sinal DSL. Afaste cabos paralelos de potência.",
-                                        "Nunca partilhe a senha do seu roteador principal sem configurar uma rede de visitantes estéril."
-                                    )
-                                    val currentIdx = tips.indexOf(activeTechTip)
-                                    activeTechTip = tips.filter { it != activeTechTip }.random()
-                                }
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(SuccessGreen.copy(alpha = 0.15f))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "SISTEMA ONLINE",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = SuccessGreen
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Diagnostic metrics row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(SlateDark.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                                .border(1.dp, BorderGrey, RoundedCornerShape(8.dp))
+                                .padding(10.dp)
+                        ) {
+                            Text("Latência Luanda", fontSize = 10.sp, color = TextGrey)
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier.padding(top = 2.dp)
+                            ) {
+                                Text("${networkLatency}ms", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TechCyan)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    imageVector = Icons.Default.Speed,
+                                    contentDescription = null,
+                                    tint = TechCyan,
+                                    modifier = Modifier.size(12.dp).align(Alignment.CenterVertically)
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(SlateDark.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                                .border(1.dp, BorderGrey, RoundedCornerShape(8.dp))
+                                .padding(10.dp)
+                        ) {
+                            Text("Estabilidade VPN", fontSize = 10.sp, color = TextGrey)
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier.padding(top = 2.dp)
+                            ) {
+                                Text("${systemStability}%", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = SuccessGreen)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    imageVector = Icons.Default.Shield,
+                                    contentDescription = null,
+                                    tint = SuccessGreen,
+                                    modifier = Modifier.size(12.dp).align(Alignment.CenterVertically)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Changing tech tips panel
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFF141F32), RoundedCornerShape(8.dp))
+                            .padding(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "💡 DICA TECNOLÓGICA INTELIGENTE",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PremiumGold
+                            )
+                            Icon(
+                                imageVector = Icons.Default.Cached,
+                                contentDescription = "Próxima Dica",
+                                tint = PremiumGold,
+                                modifier = Modifier
+                                    .size(14.dp)
+                                    .clickable {
+                                        val tips = listOf(
+                                            "Wi-Fi lento? Reiniciar o router limpa a cache de pacotes congestionados.",
+                                            "Software travando? Uma formatação limpa ou atualização de drivers resolve 90% dos problemas de lentidão.",
+                                            "Fiação elétrica quente de rede pode enfraquecer o sinal DSL. Afaste cabos paralelos de potência.",
+                                            "Nunca partilhe a senha do seu roteador principal sem configurar uma rede de visitantes estéril."
+                                        )
+                                        val currentIdx = tips.indexOf(activeTechTip)
+                                        activeTechTip = tips.filter { it != activeTechTip }.random()
+                                    }
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = activeTechTip,
+                            fontSize = 12.sp,
+                            color = TextWhite,
+                            lineHeight = 16.sp
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = activeTechTip,
-                        fontSize = 12.sp,
-                        color = TextWhite,
-                        lineHeight = 16.sp
-                    )
                 }
             }
         }
 
         // Active Request Alert Banner
         if (activeRequest != null) {
-            Card(
-                onClick = { viewModel.navigateToClientScreen("STATUS") },
-                colors = CardDefaults.cardColors(containerColor = PremiumGold.copy(alpha = 0.15f)),
-                border = BorderStroke(1.dp, PremiumGold),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+            item {
+                Card(
+                    onClick = { viewModel.navigateToClientScreen("STATUS") },
+                    colors = CardDefaults.cardColors(containerColor = PremiumGold.copy(alpha = 0.15f)),
+                    border = BorderStroke(1.dp, PremiumGold),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Box(
+                    Row(
                         modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(PremiumGold),
-                        contentAlignment = Alignment.Center
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(PremiumGold),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.DirectionsRun,
+                                contentDescription = "Corrida",
+                                tint = SlateDark,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Tem um chamado activo!",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextWhite
+                            )
+                            Text(
+                                text = "Área: ${activeRequest!!.category} • Estado: ${activeRequest!!.status}",
+                                fontSize = 11.sp,
+                                color = PremiumGold
+                            )
+                        }
+
                         Icon(
-                            imageVector = Icons.Default.DirectionsRun,
-                            contentDescription = "Corrida",
-                            tint = SlateDark,
-                            modifier = Modifier.size(20.dp)
+                            imageVector = Icons.Default.ChevronRight,
+                            contentDescription = "Ver Chamado",
+                            tint = PremiumGold
                         )
                     }
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "Tem um chamado activo!",
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextWhite
-                        )
-                        Text(
-                            text = "Área: ${activeRequest!!.category} • Estado: ${activeRequest!!.status}",
-                            fontSize = 11.sp,
-                            color = PremiumGold
-                        )
-                    }
-
-                    Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = "Ver Chamado",
-                        tint = PremiumGold
-                    )
                 }
             }
         }
 
         // Switcher Tabs
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(SlateDark)
-                .border(2.dp, BorderGrey, RoundedCornerShape(12.dp))
-                .padding(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { viewModeMap = false },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (!viewModeMap) CardGrey else Color.Transparent,
-                    contentColor = if (!viewModeMap) PremiumGold else TextGrey
-                ),
-                shape = RoundedCornerShape(8.dp),
+        item {
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .height(38.dp),
-                contentPadding = PaddingValues(0.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(SlateDark)
+                    .border(2.dp, BorderGrey, RoundedCornerShape(12.dp))
+                    .padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                Button(
+                    onClick = { viewModeMap = false },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (!viewModeMap) CardGrey else Color.Transparent,
+                        contentColor = if (!viewModeMap) PremiumGold else TextGrey
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(38.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Category,
-                        contentDescription = "Menu Especialidades",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Especialidades",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.ExtraBold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Category,
+                            contentDescription = "Menu Especialidades",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Especialidades",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    }
                 }
-            }
 
-            Button(
-                onClick = { viewModeMap = true },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (viewModeMap) CardGrey else Color.Transparent,
-                    contentColor = if (viewModeMap) PremiumGold else TextGrey
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(38.dp),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                Button(
+                    onClick = { viewModeMap = true },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (viewModeMap) CardGrey else Color.Transparent,
+                        contentColor = if (viewModeMap) PremiumGold else TextGrey
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(38.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Map,
-                        contentDescription = "Menu Mapa",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Mapa de Luanda",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.ExtraBold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Map,
+                            contentDescription = "Menu Mapa",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Mapa de Luanda",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    }
                 }
             }
         }
 
         // Show Map or List details
         if (viewModeMap) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.5.dp, BorderGrey, RoundedCornerShape(16.dp))
-            ) {
-                LuandaGoogleMap(
-                    engineers = allOnlineEngineers,
-                    onEngineerSelected = { eng ->
-                        viewModel.selectCategory(eng.specialty)
-                        viewModel.updateProblemDescription("Solicitação directa para o especialista ${eng.name}. Favor atender ao meu problema urgente em Luanda.")
-                    }
-                )
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Category Cards Grid Title
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Especialidades Técnicas",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextWhite
-                        )
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(CircleShape)
-                                    .background(SuccessGreen)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "${allOnlineEngineers.size + 3} Online",
-                                fontSize = 11.sp,
-                                color = SuccessGreen,
-                                fontWeight = FontWeight.Bold
-                            )
+            item {
+                Box(
+                    modifier = Modifier
+                        .height(360.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.5.dp, BorderGrey, RoundedCornerShape(16.dp))
+                ) {
+                    LuandaGoogleMap(
+                        engineers = allOnlineEngineers,
+                        onEngineerSelected = { eng ->
+                            viewModel.selectCategory(eng.specialty)
+                            viewModel.updateProblemDescription("Solicitação directa para o especialista ${eng.name}. Favor atender ao meu problema urgente em Luanda.")
                         }
-                    }
-                }
-
-                // Category Items List
-                item {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        CategoryCard(
-                            title = "Informáticos",
-                            description = "Software, redes estruturadas, administração de sistemas Linux/Cloud e desenvolvimento.",
-                            icon = Icons.Default.Computer,
-                            color = TechCyan,
-                            onClick = { viewModel.selectCategory("Informático") }
-                        )
-
-                        CategoryCard(
-                            title = "Técnicos de TI",
-                            description = "Suporte a computadores físicos, reparações rápidas, Wi-Fi lento e formatação urgente.",
-                            icon = Icons.Default.SettingsSuggest,
-                            color = PremiumRed,
-                            onClick = { viewModel.selectCategory("Técnico de TI") }
-                        )
-                    }
-                }
-
-                // Historical Log of Requests
-                item {
-                    Text(
-                        text = "Histórico de Chamados Recentes",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextWhite,
-                        modifier = Modifier.padding(top = 10.dp)
                     )
                 }
+            }
+        } else {
+            // Category Cards Grid Title
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Especialidades Técnicas",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextWhite
+                    )
 
-                val clientRequests = allRequests.filter { it.clientPhone == viewModel.clientPhone.value }
-                if (clientRequests.isEmpty()) {
-                    item {
-                        Card(
-                            colors = CardDefaults.cardColors(containerColor = CardGrey),
-                            border = BorderStroke(1.dp, BorderGrey),
-                            modifier = Modifier.fillMaxWidth()
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(SuccessGreen)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "${allOnlineEngineers.size + 3} Online",
+                            fontSize = 11.sp,
+                            color = SuccessGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            // Category Items List
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    CategoryCard(
+                        title = "Informáticos",
+                        description = "Software, redes estruturadas, administração de sistemas Linux/Cloud e desenvolvimento.",
+                        icon = Icons.Default.Computer,
+                        color = TechCyan,
+                        onClick = { viewModel.selectCategory("Informático") }
+                    )
+
+                    CategoryCard(
+                        title = "Técnicos de TI",
+                        description = "Suporte a computadores físicos, reparações rápidas, Wi-Fi lento e formatação urgente.",
+                        icon = Icons.Default.SettingsSuggest,
+                        color = PremiumRed,
+                        onClick = { viewModel.selectCategory("Técnico de TI") }
+                    )
+                }
+            }
+
+            // Historical Log of Requests
+            item {
+                Text(
+                    text = "Histórico de Chamados Recentes",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
+
+            val clientRequests = allRequests.filter { it.clientPhone == viewModel.clientPhone.value }
+            if (clientRequests.isEmpty()) {
+                item {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = CardGrey),
+                        border = BorderStroke(1.dp, BorderGrey),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(24.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Engineering,
-                                    contentDescription = "Lista Vazia",
-                                    tint = TextGrey,
-                                    modifier = Modifier.size(36.dp)
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Nenhum chamado efetuado",
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = TextWhite
-                                )
-                                Text(
-                                    text = "A sua segurança e comodidade técnica começam aqui.",
-                                    fontSize = 11.sp,
-                                    color = TextGrey,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(top = 2.dp)
-                                )
-                            }
+                            Icon(
+                                imageVector = Icons.Default.Engineering,
+                                contentDescription = "Lista Vazia",
+                                tint = TextGrey,
+                                modifier = Modifier.size(36.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Nenhum chamado efetuado",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = TextWhite
+                            )
+                            Text(
+                                text = "A sua segurança e comodidade técnica começam aqui.",
+                                fontSize = 11.sp,
+                                color = TextGrey,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(top = 2.dp)
+                            )
                         }
                     }
-                } else {
-                    items(clientRequests) { req ->
-                        Card(
-                            colors = CardDefaults.cardColors(containerColor = CardGrey),
-                            border = BorderStroke(1.dp, BorderGrey),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        val ic = when (req.category) {
-                                            "Informático" -> Icons.Default.Computer
-                                            else -> Icons.Default.SettingsSuggest
-                                        }
-                                        val badgeColor = when (req.category) {
-                                            "Informático" -> TechCyan
-                                            else -> PremiumRed
-                                        }
-                                        Box(
-                                            modifier = Modifier
-                                                .size(32.dp)
-                                                .clip(CircleShape)
-                                                .background(badgeColor.copy(alpha = 0.15f)),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Icon(
-                                                imageVector = ic,
-                                                contentDescription = req.category,
-                                                tint = badgeColor,
-                                                modifier = Modifier.size(18.dp)
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(
-                                            text = req.category,
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = TextWhite
-                                        )
+                }
+            } else {
+                items(clientRequests) { req ->
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = CardGrey),
+                        border = BorderStroke(1.dp, BorderGrey),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    val ic = when (req.category) {
+                                        "Informático" -> Icons.Default.Computer
+                                        else -> Icons.Default.SettingsSuggest
                                     }
-
+                                    val badgeColor = when (req.category) {
+                                        "Informático" -> TechCyan
+                                        else -> PremiumRed
+                                    }
                                     Box(
                                         modifier = Modifier
-                                            .clip(RoundedCornerShape(6.dp))
-                                            .background(
-                                                if (req.status == "COMPLETED") SuccessGreen.copy(alpha = 0.15f)
-                                                else PremiumGold.copy(alpha = 0.15f)
-                                            )
-                                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                                            .size(32.dp)
+                                            .clip(CircleShape)
+                                            .background(badgeColor.copy(alpha = 0.15f)),
+                                        contentAlignment = Alignment.Center
                                     ) {
-                                        Text(
-                                            text = if (req.status == "COMPLETED") "Concluído" else "Em Andamento",
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = if (req.status == "COMPLETED") SuccessGreen else PremiumGold
+                                        Icon(
+                                            imageVector = ic,
+                                            contentDescription = req.category,
+                                            tint = badgeColor,
+                                            modifier = Modifier.size(18.dp)
                                         )
                                     }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = req.category,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = TextWhite
+                                    )
                                 }
 
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(
-                                    text = req.problemDescription,
-                                    fontSize = 13.sp,
-                                    color = TextWhite,
-                                    maxLines = 2,
-                                    lineHeight = 17.sp
-                                )
-
-                                Spacer(modifier = Modifier.height(6.dp))
-
-                                val formattedDate = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                                    .format(Date(req.requestTime))
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .background(
+                                            if (req.status == "COMPLETED") SuccessGreen.copy(alpha = 0.15f)
+                                            else PremiumGold.copy(alpha = 0.15f)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 2.dp)
                                 ) {
                                     Text(
-                                        text = "Solicitado em $formattedDate",
+                                        text = if (req.status == "COMPLETED") "Concluído" else "Em Andamento",
                                         fontSize = 11.sp,
-                                        color = TextGrey
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (req.status == "COMPLETED") SuccessGreen else PremiumGold
                                     )
+                                }
+                            }
 
-                                    if (req.rating != null) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            repeat(req.rating) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Star,
-                                                    contentDescription = "Star",
-                                                    tint = PremiumGold,
-                                                    modifier = Modifier.size(12.dp)
-                                                )
-                                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = req.problemDescription,
+                                fontSize = 13.sp,
+                                color = TextWhite,
+                                maxLines = 2,
+                                lineHeight = 17.sp
+                            )
+
+                            Spacer(modifier = Modifier.height(6.dp))
+
+                            val formattedDate = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                                .format(Date(req.requestTime))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Solicitado em $formattedDate",
+                                    fontSize = 11.sp,
+                                    color = TextGrey
+                                )
+
+                                if (req.rating != null) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        repeat(req.rating) {
+                                            Icon(
+                                                imageVector = Icons.Default.Star,
+                                                contentDescription = "Star",
+                                                tint = PremiumGold,
+                                                modifier = Modifier.size(12.dp)
+                                            )
                                         }
                                     }
                                 }
